@@ -5,7 +5,12 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import AboutPage from "../../features/about/AboutPage";
 import Catalog from "../../features/catalog/Catalog";
+import ProductDetails from "../../features/catalog/ProductDetails";
+import ContactPage from "../../features/contact/ContactPage";
+import HomePage from "../../features/home/HomePage";
 import Header from "./Header";
 
 function App() {
@@ -29,8 +34,13 @@ function App() {
       <CssBaseline />
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
       <Container>
-        <Catalog />
-        <h2>dasdsa</h2>
+        <Routes>
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/catalog" element={<Catalog />}></Route>
+          <Route path="/catalog/:id" element={<ProductDetails />}></Route>
+          <Route path="/about" element={<AboutPage />}></Route>
+          <Route path="/contact" element={<ContactPage />}></Route>
+        </Routes>
       </Container>
     </ThemeProvider>
   );
