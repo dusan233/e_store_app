@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../app/api/agent";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 import { Product } from "../../app/models/product";
 
 const ProductDetails = () => {
@@ -30,7 +31,7 @@ const ProductDetails = () => {
       });
   }, [id]);
 
-  if (loading) return <h3>Loading...</h3>;
+  if (loading) return <LoadingComponent />;
 
   if (!product) return <h3>Product not found</h3>;
 
