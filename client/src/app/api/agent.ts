@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { history } from "../..";
 
 axios.defaults.baseURL = "http://localhost:5063/api/";
+// axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(
   (response) => {
@@ -52,6 +53,14 @@ const catalog = {
   details: (id: number) => request.get(`products/${id}`),
 };
 
+const cart = {
+  get: () => request.get("cart"),
+  addItem: (productId: number, quantity: number = 1) =>
+    request.post(`cart?productId=${productId}&quantity=${quantity}`, {}),
+  removeItem: (productId: number, quantity: number = 1) =>
+    request.delete(`cart?productId=${productId}&quantity=${quantity}`),
+};
+
 const testErrors = {
   get400Error: () =>
     request.get("buggy/bad-request").catch((err) => console.log(err)),
@@ -67,6 +76,7 @@ const testErrors = {
 const api = {
   catalog,
   testErrors,
+  cart,
 };
 
 export default api;

@@ -8,7 +8,10 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../../app/api/agent";
 import { Product } from "../../app/models/product";
 
 interface Props {
@@ -16,6 +19,18 @@ interface Props {
 }
 
 const ProductCard = ({ product }: Props) => {
+  const [loading, setLoading] = useState(false);
+
+  function handleAddItem(productId: number) {
+    setLoading(true);
+    api.cart
+      .addItem(productId)
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setLoading(false));
+  }
+
   return (
     <Card>
       <CardHeader
@@ -47,7 +62,13 @@ const ProductCard = ({ product }: Props) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Add to cart</Button>
+        <LoadingButton
+          loading={loading}
+          onClick={() => handleAddItem(product.id)}
+          size="small"
+        >
+          Add to cart
+        </LoadingButton>
         <Link to={`/catalog/${product.id}`}>
           <Button size="small">View</Button>
         </Link>
