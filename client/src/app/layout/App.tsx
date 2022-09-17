@@ -16,6 +16,7 @@ import Header from "./Header";
 import "react-toastify/dist/ReactToastify.css";
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
+import CartPage from "../../features/cart/CartPage";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -46,6 +47,7 @@ function App() {
           <Route path="/about" element={<AboutPage />}></Route>
           <Route path="/contact" element={<ContactPage />}></Route>
           <Route path="/server-error" element={<ServerError />}></Route>
+          <Route path="/cart" element={<CartPage />}></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </Container>
