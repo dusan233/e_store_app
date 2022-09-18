@@ -13,6 +13,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../app/api/agent";
 import { Product } from "../../app/models/product";
+import { useStoreContext } from "../../app/context/StoreContext";
 
 interface Props {
   product: Product;
@@ -20,11 +21,13 @@ interface Props {
 
 const ProductCard = ({ product }: Props) => {
   const [loading, setLoading] = useState(false);
+  const { setCart } = useStoreContext();
 
   function handleAddItem(productId: number) {
     setLoading(true);
     api.cart
       .addItem(productId)
+      .then((cart) => setCart(cart))
       .catch((err) => {
         console.log(err);
       })

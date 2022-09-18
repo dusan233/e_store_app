@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
+import { useStoreContext } from "../context/StoreContext";
 
 interface Props {
   darkMode: boolean;
@@ -29,6 +30,9 @@ const rightLinks = [
 ];
 
 const Header = ({ darkMode, handleThemeChange }: Props) => {
+  const { cart } = useStoreContext();
+  const itemCount = cart?.items.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <AppBar color="primary" sx={{ mb: 4 }} position="static">
       <Toolbar
@@ -57,7 +61,7 @@ const Header = ({ darkMode, handleThemeChange }: Props) => {
         <Box display="flex" alignItems="center">
           <Link to="/cart">
             <IconButton size="large" sx={{ color: "inherit" }}>
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={itemCount} color="secondary">
                 <ShoppingCart />
               </Badge>
             </IconButton>

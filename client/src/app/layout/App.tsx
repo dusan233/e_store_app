@@ -4,7 +4,7 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AboutPage from "../../features/about/AboutPage";
@@ -17,8 +17,15 @@ import "react-toastify/dist/ReactToastify.css";
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
 import CartPage from "../../features/cart/CartPage";
+import { useStoreContext } from "../context/StoreContext";
+import { getCookie } from "../util/util";
+import api from "../api/agent";
+import LoadingComponent from "./LoadingComponent";
 
 function App() {
+  const { setCart } = useStoreContext();
+  const [loading, seetLoading] = useState(true);
+
   const [darkMode, setDarkMode] = useState(false);
   const paletteType = darkMode ? "dark" : "light";
   const theme = createTheme({
@@ -30,9 +37,24 @@ function App() {
     },
   });
 
+  useEffect(() => {
+    const buyerId = getCookie("buyerId");
+    if (buyerId) {
+      api.cart
+        .get()
+        .then((cart) => setCart(cart))
+        .catch((err) => console.log(err))
+        .finally(() => seetLoading(false));
+    } else {
+      seetLoading(false);
+    }
+  }, [setCart]);
+
   const handleThemeChange = () => {
     setDarkMode(!darkMode);
   };
+
+  if (loading) return <LoadingComponent />;
 
   return (
     <ThemeProvider theme={theme}>

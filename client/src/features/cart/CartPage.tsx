@@ -10,26 +10,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import api from "../../app/api/agent";
-import LoadingComponent from "../../app/layout/LoadingComponent";
-import { Cart } from "../../app/models/cart";
+import { useStoreContext } from "../../app/context/StoreContext";
 
 const CartPage = () => {
-  const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState<Cart | null>(null);
-
-  useEffect(() => {
-    api.cart
-      .get()
-      .then((cart) => setCart(cart))
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) return <LoadingComponent />;
+  const { cart } = useStoreContext();
 
   if (!cart) return <Typography variant="h3">Your cart is empty</Typography>;
 
