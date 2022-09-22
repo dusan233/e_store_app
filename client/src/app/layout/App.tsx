@@ -17,14 +17,15 @@ import "react-toastify/dist/ReactToastify.css";
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
 import CartPage from "../../features/cart/CartPage";
-import { useStoreContext } from "../context/StoreContext";
 import { getCookie } from "../util/util";
 import api from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
 import CheckoutPage from "../../features/checkout/CheckoutPage";
+import { useAppDispatch } from "../store/configureStore";
+import { setCart } from "../../features/cart/cartSlice";
 
 function App() {
-  const { setCart } = useStoreContext();
+  const dispatch = useAppDispatch();
   const [loading, seetLoading] = useState(true);
 
   const [darkMode, setDarkMode] = useState(false);
@@ -43,7 +44,7 @@ function App() {
     if (buyerId) {
       api.cart
         .get()
-        .then((cart) => setCart(cart))
+        .then((cart) => dispatch(setCart(cart)))
         .catch((err) => console.log(err))
         .finally(() => seetLoading(false));
     } else {

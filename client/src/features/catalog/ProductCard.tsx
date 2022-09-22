@@ -9,30 +9,18 @@ import {
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import api from "../../app/api/agent";
 import { Product } from "../../app/models/product";
-import { useStoreContext } from "../../app/context/StoreContext";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
+import { addCartItemAsync } from "../cart/cartSlice";
 
 interface Props {
   product: Product;
 }
 
 const ProductCard = ({ product }: Props) => {
-  const [loading, setLoading] = useState(false);
-  const { setCart } = useStoreContext();
-
-  function handleAddItem(productId: number) {
-    setLoading(true);
-    api.cart
-      .addItem(productId)
-      .then((cart) => setCart(cart))
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setLoading(false));
-  }
+  const { status } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   return (
     <Card>
@@ -66,8 +54,8 @@ const ProductCard = ({ product }: Props) => {
       </CardContent>
       <CardActions>
         <LoadingButton
-          loading={loading}
-          onClick={() => handleAddItem(product.id)}
+          loading={status.includes("pendingAddItem" + product.id)}
+          onClick={() => dispatch(addCartItemAsync({ productId: product.id }))}
           size="small"
         >
           Add to cart

@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
 import { useStoreContext } from "../context/StoreContext";
+import { useAppSelector } from "../store/configureStore";
 
 interface Props {
   darkMode: boolean;
@@ -30,7 +31,7 @@ const rightLinks = [
 ];
 
 const Header = ({ darkMode, handleThemeChange }: Props) => {
-  const { cart } = useStoreContext();
+  const { cart } = useAppSelector((state) => state.cart);
   const itemCount = cart?.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (

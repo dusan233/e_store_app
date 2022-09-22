@@ -13,17 +13,23 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../app/api/agent";
-import { useStoreContext } from "../../app/context/StoreContext";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { Product } from "../../app/models/product";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
+import {
+  addCartItemAsync,
+  removeCartItemAsync,
+  setCart,
+} from "../cart/cartSlice";
 
 const ProductDetails = () => {
-  const { cart, setCart, removeItem } = useStoreContext();
+  const { cart, status } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [quantity, setQuantity] = useState(0);
-  const [submitting, setSubmitting] = useState(false);
+
   const item = cart?.items.find((item) => item.productId === product?.id);
 
   useEffect(() => {
@@ -46,23 +52,22 @@ const ProductDetails = () => {
   }
 
   function handleUpdateCart() {
-    setSubmitting(true);
     if (!item || quantity > item.quantity) {
       const updateQuantity = item ? quantity - item.quantity : quantity;
-      api.cart
-        .addItem(product?.id!, updateQuantity)
-        .then((cart) => {
-          setCart(cart);
+      dispatch(
+        addCartItemAsync({
+          productId: item?.productId!,
+          quantity: updateQuantity,
         })
-        .catch((err) => console.log(err))
-        .finally(() => setSubmitting(false));
+      );
     } else {
       const updatedQuantity = item.quantity - quantity;
-      api.cart
-        .removeItem(product?.id!, updatedQuantity)
-        .then(() => removeItem(product?.id!, updatedQuantity))
-        .catch((err) => console.log(err))
-        .finally(() => setSubmitting(false));
+      dispatch(
+        removeCartItemAsync({
+          productId: item?.productId!,
+          quantity: updatedQuantity,
+        })
+      );
     }
   }
 
@@ -126,7 +131,7 @@ const ProductDetails = () => {
               disabled={
                 item?.quantity === quantity || (!item && quantity === 0)
               }
-              loading={submitting}
+              loading={status.includes("pendingRemoveItem" + item?.productId!)}
               onClick={handleUpdateCart}
               sx={{ height: "55px" }}
               color="primary"
