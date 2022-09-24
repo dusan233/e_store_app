@@ -15,22 +15,22 @@ const initialState: CartState = {
 export const addCartItemAsync = createAsyncThunk<
   Cart,
   { productId: number; quantity?: number }
->("cart/addCartItemAsync", async ({ productId, quantity = 1 }) => {
+>("cart/addCartItemAsync", async ({ productId, quantity = 1 }, thunkAPI) => {
   try {
     return await api.cart.addItem(productId, quantity);
   } catch (err) {
-    console.log(err);
+    return thunkAPI.rejectWithValue(err);
   }
 });
 
 export const removeCartItemAsync = createAsyncThunk<
   void,
   { productId: number; quantity: number; name?: string }
->("cart/removeCartItemAsync", async ({ productId, quantity }) => {
+>("cart/removeCartItemAsync", async ({ productId, quantity }, thunkAPI) => {
   try {
     return await api.cart.removeItem(productId, quantity);
   } catch (err) {
-    console.log(err);
+    return thunkAPI.rejectWithValue(err);
   }
 });
 
