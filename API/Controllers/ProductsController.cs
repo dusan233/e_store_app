@@ -17,18 +17,20 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts(string orderBy)
+        public async Task<ActionResult<List<Product>>> GetProducts(string orderBy, string searchTerm)
         {
             var query = _context.Products.AsQueryable();
-
-
-
             query = orderBy switch
             {
                 "price" => query.OrderBy(p => p.Price),
                 "priceDesc" => query.OrderByDescending(p => p.Price),
                 _ => query.OrderBy(p => p.Name)
             };
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(p => p.Name.ToLower().Contains(searchTerm.Trim().ToLower()));
+            }
 
             return await query.ToListAsync();
 
