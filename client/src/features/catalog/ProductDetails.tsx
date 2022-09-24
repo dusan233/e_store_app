@@ -12,38 +12,27 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import api from "../../app/api/agent";
 import LoadingComponent from "../../app/layout/LoadingComponent";
-import { Product } from "../../app/models/product";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import {
-  addCartItemAsync,
-  removeCartItemAsync,
-  setCart,
-} from "../cart/cartSlice";
+import { addCartItemAsync, removeCartItemAsync } from "../cart/cartSlice";
+import { fetchProductAsync, productSelectors } from "./catalogSlice";
 
 const ProductDetails = () => {
   const { cart, status } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const product = useAppSelector((state) =>
+    productSelectors.selectById(state, id!)
+  );
+  const { status: productStatus } = useAppSelector((state) => state.catalog);
   const [quantity, setQuantity] = useState(0);
 
   const item = cart?.items.find((item) => item.productId === product?.id);
 
   useEffect(() => {
     if (item) setQuantity(item.quantity);
-    api.catalog
-      .details(parseInt(id!))
-      .then((products) => setProduct(products))
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [id, item]);
+    if (!product) dispatch(fetchProductAsync(parseInt(id!)));
+  }, [id, item, dispatch, product]);
 
   function handleInputChange(event: any) {
     if (event.target.value >= 0) {
@@ -71,7 +60,7 @@ const ProductDetails = () => {
     }
   }
 
-  if (loading) return <LoadingComponent />;
+  if (productStatus === "pendingFetchProduct") return <LoadingComponent />;
 
   if (!product) return <h3>Product not found</h3>;
 
@@ -131,7 +120,7 @@ const ProductDetails = () => {
               disabled={
                 item?.quantity === quantity || (!item && quantity === 0)
               }
-              loading={status.includes("pendingRemoveItem" + item?.productId!)}
+              loading={status.includes("pending")}
               onClick={handleUpdateCart}
               sx={{ height: "55px" }}
               color="primary"

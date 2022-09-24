@@ -25,8 +25,8 @@ export const addCartItemAsync = createAsyncThunk<
 
 export const removeCartItemAsync = createAsyncThunk<
   void,
-  { productId: number; quantity?: number }
->("cart/removeCartItemAsync", async ({ productId, quantity = 1 }) => {
+  { productId: number; quantity: number; name?: string }
+>("cart/removeCartItemAsync", async ({ productId, quantity }) => {
   try {
     return await api.cart.removeItem(productId, quantity);
   } catch (err) {
@@ -54,7 +54,8 @@ export const cartSlice = createSlice({
       state.status = "idle";
     });
     builder.addCase(removeCartItemAsync.pending, (state, action) => {
-      state.status = "pendingRemoveItem" + action.meta.arg.productId;
+      state.status =
+        "pendingRemoveItem" + action.meta.arg.productId + action.meta.arg.name;
     });
     builder.addCase(removeCartItemAsync.fulfilled, (state, action) => {
       const { productId, quantity } = action.meta.arg;
@@ -63,7 +64,7 @@ export const cartSlice = createSlice({
       );
       if (itemIndex === -1 || itemIndex === undefined) return;
 
-      state.cart!.items[itemIndex].quantity -= quantity!;
+      state.cart!.items[itemIndex].quantity -= quantity;
 
       if (state.cart?.items[itemIndex].quantity === 0)
         state.cart.items.splice(itemIndex, 1);

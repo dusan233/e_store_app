@@ -11,11 +11,9 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import api from "../../app/api/agent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { addCartItemAsync, removeCartItemAsync, setCart } from "./cartSlice";
+import { addCartItemAsync, removeCartItemAsync } from "./cartSlice";
 
 const CartPage = () => {
   const { cart, status } = useAppSelector((state) => state.cart);
@@ -57,12 +55,16 @@ const CartPage = () => {
                 </TableCell>
                 <TableCell align="right">
                   <LoadingButton
-                    loading={status.includes(
-                      "pendingRemoveItem" + item.productId
-                    )}
+                    loading={
+                      status === "pendingRemoveItem" + item.productId + "remove"
+                    }
                     onClick={() =>
                       dispatch(
-                        removeCartItemAsync({ productId: item.productId })
+                        removeCartItemAsync({
+                          productId: item.productId,
+                          quantity: 1,
+                          name: "remove",
+                        })
                       )
                     }
                     color="error"
@@ -71,7 +73,7 @@ const CartPage = () => {
                   </LoadingButton>
                   {item.quantity}
                   <LoadingButton
-                    loading={status.includes("pendingAddItem" + item.productId)}
+                    loading={status === "pendingAddItem" + item.productId}
                     onClick={() =>
                       dispatch(addCartItemAsync({ productId: item.productId }))
                     }
@@ -86,14 +88,15 @@ const CartPage = () => {
                 </TableCell>
                 <TableCell align="right">
                   <LoadingButton
-                    loading={status.includes(
-                      "pendingRemoveItem" + item.productId
-                    )}
+                    loading={
+                      status === "pendingRemoveItem" + item.productId + "delete"
+                    }
                     onClick={() =>
                       dispatch(
                         removeCartItemAsync({
                           productId: item.productId,
                           quantity: item.quantity,
+                          name: "delete",
                         })
                       )
                     }
