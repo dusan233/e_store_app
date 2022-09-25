@@ -42,15 +42,17 @@ axios.interceptors.response.use(
 const responseBody = (response: AxiosResponse) => response.data;
 
 const request = {
-  get: (url: string) => axios.get(url).then(responseBody),
+  get: (url: string, params?: URLSearchParams) =>
+    axios.get(url, { params }).then(responseBody),
   post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
   put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
   delete: (url: string) => axios.delete(url).then(responseBody),
 };
 
 const catalog = {
-  list: () => request.get("products"),
+  list: (params: URLSearchParams) => request.get("products", params),
   details: (id: number) => request.get(`products/${id}`),
+  fetchFilters: () => request.get("products/filters"),
 };
 
 const cart = {
