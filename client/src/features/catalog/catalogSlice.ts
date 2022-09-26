@@ -3,6 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
+import { stat } from "fs";
 import api from "../../app/api/agent";
 import { MetaData } from "../../app/models/pagination";
 import { Product, ProductParams } from "../../app/models/product";
@@ -27,9 +28,9 @@ function getAxiosParams(productParams: ProductParams) {
   params.append("orderBy", productParams.orderBy);
   if (productParams.searchTerm)
     params.append("searchTerm", productParams.searchTerm.toString());
-  if (productParams.brands)
+  if (productParams.brands.length > 0)
     params.append("brands", productParams.brands.toString());
-  if (productParams.types)
+  if (productParams.types.length > 0)
     params.append("types", productParams.types.toString());
 
   return params;
@@ -77,6 +78,8 @@ function initParams() {
     pageNumber: 1,
     pageSize: 6,
     orderBy: "name",
+    brands: [],
+    types: [],
   };
 }
 
@@ -94,10 +97,21 @@ export const catalogSlice = createSlice({
   reducers: {
     setProductParams: (state, action) => {
       state.productsLoaded = false;
-      state.productParams = { ...state.productParams, ...action.payload };
+      state.productParams = {
+        ...state.productParams,
+        ...action.payload,
+        pageNumber: 1,
+      };
     },
     setMetaData: (state, action) => {
       state.metaData = action.payload;
+    },
+    setPageNumber: (state, action) => {
+      state.productsLoaded = false;
+      state.productParams = {
+        ...state.productParams,
+        ...action.payload,
+      };
     },
     resetProductParams: (state, action) => {
       state.productParams = initParams();
@@ -145,5 +159,9 @@ export const catalogSlice = createSlice({
 export const productSelectors = productsAdapter.getSelectors(
   (state: RootState) => state.catalog
 );
-export const { setProductParams, resetProductParams, setMetaData } =
-  catalogSlice.actions;
+export const {
+  setProductParams,
+  resetProductParams,
+  setMetaData,
+  setPageNumber,
+} = catalogSlice.actions;
