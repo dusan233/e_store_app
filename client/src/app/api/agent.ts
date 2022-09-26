@@ -1,12 +1,22 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
+import { PaginatedResponse } from "../models/pagination";
 
 axios.defaults.baseURL = "http://localhost:5063/api/";
 // axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(
   (response) => {
+    const pagination = response.headers["pagination"];
+    if (pagination) {
+      response.data = new PaginatedResponse(
+        response.data,
+        JSON.parse(pagination)
+      );
+
+      return response;
+    }
     return response;
   },
   (error: AxiosError) => {
