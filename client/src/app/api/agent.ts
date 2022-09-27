@@ -73,6 +73,12 @@ const cart = {
     request.delete(`cart?productId=${productId}&quantity=${quantity}`),
 };
 
+const account = {
+  login: (values: any) => request.post("account/login", values),
+  register: (values: any) => request.post("account/register", values),
+  currentUser: () => request.get("account/currentUser"),
+};
+
 const testErrors = {
   get400Error: () =>
     request.get("buggy/bad-request").catch((err) => console.log(err)),
@@ -89,6 +95,7 @@ const api = {
   catalog,
   testErrors,
   cart,
+  account,
 };
 
 export default api;
