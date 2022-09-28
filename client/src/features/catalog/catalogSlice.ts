@@ -3,7 +3,6 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { stat } from "fs";
 import api from "../../app/api/agent";
 import { MetaData } from "../../app/models/pagination";
 import { Product, ProductParams } from "../../app/models/product";

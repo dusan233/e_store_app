@@ -25,6 +25,7 @@ import { useAppDispatch } from "../store/configureStore";
 import { setCart } from "../../features/cart/cartSlice";
 import Register from "../../features/account/Register";
 import Login from "../../features/account/Login";
+import { fetchCurrentUser } from "../../features/account/accountSlice";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -43,6 +44,7 @@ function App() {
 
   useEffect(() => {
     const buyerId = getCookie("buyerId");
+    dispatch(fetchCurrentUser());
     if (buyerId) {
       api.cart
         .get()
@@ -52,7 +54,7 @@ function App() {
     } else {
       seetLoading(false);
     }
-  }, [setCart]);
+  }, [dispatch]);
 
   const handleThemeChange = () => {
     setDarkMode(!darkMode);

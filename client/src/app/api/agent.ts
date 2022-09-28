@@ -2,9 +2,18 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { PaginatedResponse } from "../models/pagination";
+import { store } from "../store/configureStore";
 
 axios.defaults.baseURL = "http://localhost:5063/api/";
 // axios.defaults.withCredentials = true;
+
+axios.interceptors.request.use((config) => {
+  const token = store.getState().account.user?.token;
+
+  if (token) config.headers!.Authorization = `Bearer ${token}`;
+
+  return config;
+});
 
 axios.interceptors.response.use(
   (response) => {
