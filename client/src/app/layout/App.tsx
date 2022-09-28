@@ -4,7 +4,7 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AboutPage from "../../features/about/AboutPage";
@@ -22,7 +22,7 @@ import api from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
 import CheckoutPage from "../../features/checkout/CheckoutPage";
 import { useAppDispatch } from "../store/configureStore";
-import { setCart } from "../../features/cart/cartSlice";
+import { fetchCartAsync, setCart } from "../../features/cart/cartSlice";
 import Register from "../../features/account/Register";
 import Login from "../../features/account/Login";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
@@ -42,19 +42,18 @@ function App() {
     },
   });
 
-  useEffect(() => {
-    const buyerId = getCookie("buyerId");
-    dispatch(fetchCurrentUser());
-    if (buyerId) {
-      api.cart
-        .get()
-        .then((cart) => dispatch(setCart(cart)))
-        .catch((err) => console.log(err))
-        .finally(() => seetLoading(false));
-    } else {
-      seetLoading(false);
+  const initApp = useCallback(async () => {
+    try {
+      await dispatch(fetchCurrentUser());
+      await dispatch(fetchCartAsync());
+    } catch (err) {
+      console.log(err);
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    initApp().then(() => seetLoading(false));
+  }, [initApp]);
 
   const handleThemeChange = () => {
     setDarkMode(!darkMode);
