@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { history } from "../..";
 import api from "../../app/api/agent";
 import { User } from "../../app/models/user";
+import { setCart } from "../cart/cartSlice";
 
 interface AccountState {
   user: User | null;
@@ -17,8 +18,11 @@ export const signInUser = createAsyncThunk<User, FieldValues>(
   "account/signInUser",
   async (data, thunkAPI) => {
     try {
-      const user = await api.account.login(data);
+      const userDto = await api.account.login(data);
+      const { cart, ...user } = userDto;
+      if (cart) thunkAPI.dispatch(setCart(cart));
       localStorage.setItem("user", JSON.stringify(user));
+
       return user;
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
@@ -31,7 +35,9 @@ export const fetchCurrentUser = createAsyncThunk<User>(
   async (_, thunkAPI) => {
     thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem("user")!)));
     try {
-      const user = await api.account.currentUser();
+      const userDto = await api.account.currentUser();
+      const { cart, ...user } = userDto;
+      if (cart) thunkAPI.dispatch(setCart(cart));
       localStorage.setItem("user", JSON.stringify(user));
       return user;
     } catch (err) {
@@ -72,7 +78,7 @@ export const accountSlice = createSlice({
       }
     );
     builder.addMatcher(isAnyOf(signInUser.rejected), (state, action) => {
-      console.log(action.payload);
+      throw action.payload;
     });
   },
 });

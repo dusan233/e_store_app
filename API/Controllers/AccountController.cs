@@ -48,7 +48,7 @@ namespace API.Controllers
             {
                 Email = user.Email,
                 Token = await _tokenService.GenerateToken(user),
-                Cart = anonCart != null ? anonCart.MapCartToDto() : cart.MapCartToDto(),
+                Cart = anonCart != null ? anonCart.MapCartToDto() : cart?.MapCartToDto(),
             };
         }
 
@@ -83,10 +83,13 @@ namespace API.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
+
+            var cart = await GetUserCart(User.Identity.Name);
             return new UserDto
             {
                 Email = user.Email,
                 Token = await _tokenService.GenerateToken(user),
+                Cart = cart?.MapCartToDto()
             };
         }
 
