@@ -5,22 +5,35 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Alert, AlertTitle, List, ListItem, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
 import api from "../../app/api/agent";
-import { useState } from "react";
 
 export default function Register() {
-  const [validationErrors, setValidationErrors] = useState([]);
   const {
     register,
     handleSubmit,
+    setError,
     formState: { isSubmitting, errors, isValid },
   } = useForm({
     mode: "all",
   });
+
+  function handleApiErrors(errors: any) {
+    if (errors) {
+      errors.forEach((error: string) => {
+        if (error.includes("Password")) {
+          setError("password", { message: error });
+        } else if (error.includes("Email")) {
+          setError("email", { message: error });
+        } else if (error.includes("Username")) {
+          setError("username", { message: error });
+        }
+      });
+    }
+  }
 
   return (
     <Container
@@ -42,9 +55,7 @@ export default function Register() {
       <Box
         component="form"
         onSubmit={handleSubmit((data) =>
-          api.account
-            .register(data)
-            .catch((error) => setValidationErrors(error))
+          api.account.register(data).catch((error) => handleApiErrors(error))
         )}
         noValidate
         sx={{ mt: 1 }}
@@ -76,17 +87,6 @@ export default function Register() {
           error={!!errors.password}
           helperText={"Password is required"}
         />
-
-        {validationErrors.length > 0 && (
-          <Alert severity="error">
-            <AlertTitle>ValidationErrors</AlertTitle>
-            <List>
-              {validationErrors.map((err) => (
-                <ListItem key={err}>{err}</ListItem>
-              ))}
-            </List>
-          </Alert>
-        )}
 
         <LoadingButton
           type="submit"
