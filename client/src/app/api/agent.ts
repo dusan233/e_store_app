@@ -88,6 +88,12 @@ const account = {
   currentUser: () => request.get("account/currentUser"),
 };
 
+const orders = {
+  list: () => request.get("orders"),
+  fetch: (id: number) => request.get(`orders/${id}`),
+  create: (values: any) => request.post("orders", values),
+};
+
 const testErrors = {
   get400Error: () =>
     request.get("buggy/bad-request").catch((err) => console.log(err)),
@@ -104,6 +110,7 @@ const api = {
   catalog,
   testErrors,
   cart,
+  orders,
   account,
 };
 
