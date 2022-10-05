@@ -15,6 +15,10 @@ import Review from "./Review";
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchema } from "./checkoutValidation";
+import api from "../../app/api/agent";
+import { useAppDispatch } from "../../app/store/configureStore";
+import { clearCart } from "../cart/cartSlice";
+import { LoadingButton } from "@mui/lab";
 
 const steps = ["Shipping address", "Payment details", "Review your order"];
 
@@ -31,21 +35,38 @@ function getStepContent(step: number) {
   }
 }
 
-const theme = createTheme();
-
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [orderNumber, setOrderNumber] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
+  const dispatch = useAppDispatch();
+
   const currentValidationSchema = validationSchema[activeStep];
   const methods = useForm({
     mode: "all",
     resolver: yupResolver(currentValidationSchema),
   });
 
-  const handleNext = (data: FieldValues) => {
-    if (activeStep === 0) {
-      console.log(data);
+  const handleNext = async (data: FieldValues) => {
+    const { nameOnCard, saveAddress, ...shippingAddress } = data;
+    if (activeStep === steps.length - 1) {
+      setLoading(true);
+      try {
+        const orderNumber = await api.orders.create({
+          saveAddress,
+          shippingAddress,
+        });
+        setOrderNumber(orderNumber);
+        setActiveStep(activeStep + 1);
+        dispatch(clearCart());
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
+    } else {
+      setActiveStep(activeStep + 1);
     }
-    setActiveStep(activeStep + 1);
   };
 
   const handleBack = () => {
@@ -76,9 +97,9 @@ export default function Checkout() {
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order
-                  confirmation, and will send you an update when your order has
-                  shipped.
+                  Your order number is #{orderNumber}. We have emailed your
+                  order confirmation, and will send you an update when your
+                  order has shipped.
                 </Typography>
               </React.Fragment>
             ) : (
@@ -90,14 +111,15 @@ export default function Checkout() {
                       Back
                     </Button>
                   )}
-                  <Button
+                  <LoadingButton
+                    loading={loading}
                     disabled={!methods.formState.isValid}
                     variant="contained"
                     type="submit"
                     sx={{ mt: 3, ml: 1 }}
                   >
                     {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                  </Button>
+                  </LoadingButton>
                 </Box>
               </form>
             )}
