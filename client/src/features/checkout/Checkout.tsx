@@ -47,6 +47,14 @@ export default function Checkout() {
     resolver: yupResolver(currentValidationSchema),
   });
 
+  React.useEffect(() => {
+    api.account.fetchAddress().then((res) => {
+      if (res) {
+        methods.reset({ ...methods.getValues(), ...res, saveAddress: false });
+      }
+    });
+  }, [methods]);
+
   const handleNext = async (data: FieldValues) => {
     const { nameOnCard, saveAddress, ...shippingAddress } = data;
     if (activeStep === steps.length - 1) {
