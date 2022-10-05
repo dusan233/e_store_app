@@ -27,6 +27,8 @@ import Register from "../../features/account/Register";
 import Login from "../../features/account/Login";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
 
+import Orders from "../../features/orders/Orders";
+
 function App() {
   const dispatch = useAppDispatch();
   const [loading, seetLoading] = useState(true);
@@ -75,7 +77,8 @@ function App() {
           <Route path="/contact" element={<ContactPage />}></Route>
           <Route path="/server-error" element={<ServerError />}></Route>
           <Route path="/cart" element={<CartPage />}></Route>
-          <Route path="/checkout" element={<CheckoutPage />}></Route>
+          <Route path="/orders" element={<Orders />}></Route>
+          <Route path="/register" element={<Register />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="*" element={<NotFound />}></Route>
