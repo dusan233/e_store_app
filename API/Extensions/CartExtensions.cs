@@ -1,5 +1,7 @@
 using API.DTOs;
 using API.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Extensions
 {
@@ -23,6 +25,11 @@ namespace API.Extensions
                 }).ToList()
             };
 
+        }
+
+        public static IQueryable<Cart> GetCartWithItems(this IQueryable<Cart> query, string buyerId)
+        {
+            return query.Include(i => i.Items).ThenInclude(p => p.Product).Where(b => b.BuyerId == buyerId);
         }
     }
 }
