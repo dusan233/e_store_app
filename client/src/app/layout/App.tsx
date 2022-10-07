@@ -28,6 +28,7 @@ import Login from "../../features/account/Login";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
 
 import Orders from "../../features/orders/Orders";
+import CheckoutWraper from "../../features/checkout/CheckoutWraper";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -78,7 +79,7 @@ function App() {
           <Route path="/server-error" element={<ServerError />}></Route>
           <Route path="/cart" element={<CartPage />}></Route>
           <Route path="/orders" element={<Orders />}></Route>
-          <Route path="/register" element={<Register />}></Route>
+          <Route path="/checkout" element={<CheckoutWraper />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="*" element={<NotFound />}></Route>
