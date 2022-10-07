@@ -1,5 +1,10 @@
+import { Typography } from "@mui/material";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { useEffect } from "react";
+import api from "../../app/api/agent";
+import { useAppDispatch } from "../../app/store/configureStore";
+import { setCart } from "../cart/cartSlice";
 import Checkout from "./Checkout";
 
 const stripePromise = loadStripe(
@@ -7,6 +12,23 @@ const stripePromise = loadStripe(
 );
 
 const CheckoutWraper = () => {
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.payments
+      .createPaymentIntent()
+      .then((cart) => setCart(cart))
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [dispatch]);
+
+  if (loading) return <Typography>Loading checkout...</Typography>;
+
   return (
     <Elements stripe={stripePromise}>
       <Checkout />
@@ -15,3 +37,6 @@ const CheckoutWraper = () => {
 };
 
 export default CheckoutWraper;
+function useState(arg0: boolean): [any, any] {
+  throw new Error("Function not implemented.");
+}

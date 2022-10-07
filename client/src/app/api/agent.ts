@@ -95,6 +95,10 @@ const orders = {
   create: (values: any) => request.post("orders", values),
 };
 
+const payments = {
+  createPaymentIntent: () => request.post("payments", {}),
+};
+
 const testErrors = {
   get400Error: () =>
     request.get("buggy/bad-request").catch((err) => console.log(err)),
@@ -113,6 +117,7 @@ const api = {
   cart,
   orders,
   account,
+  payments,
 };
 
 export default api;
