@@ -4,6 +4,7 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
+import { StripeElementType } from "@stripe/stripe-js";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
@@ -22,24 +23,50 @@ import { LoadingButton } from "@mui/lab";
 
 const steps = ["Shipping address", "Payment details", "Review your order"];
 
-function getStepContent(step: number) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    case 1:
-      return <PaymentForm />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error("Unknown step");
-  }
-}
-
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [orderNumber, setOrderNumber] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const dispatch = useAppDispatch();
+
+  const [cardState, setCardState] = React.useState<{
+    elementError: { [key in StripeElementType]?: string };
+  }>({ elementError: {} });
+  const [cardComplete, setCardComplete] = React.useState<any>({
+    cardNumber: false,
+    cardExpiry: false,
+    cardCvc: false,
+  });
+
+  function onCardInputChange(event: any) {
+    setCardState({
+      ...cardState,
+      elementError: {
+        ...cardState.elementError,
+        [event.elementType]: event.error?.message,
+      },
+    });
+
+    setCardComplete({ ...cardComplete, [event.elementType]: event.complete });
+  }
+
+  function getStepContent(step: number) {
+    switch (step) {
+      case 0:
+        return <AddressForm />;
+      case 1:
+        return (
+          <PaymentForm
+            cardState={cardState}
+            onCardInputChange={onCardInputChange}
+          />
+        );
+      case 2:
+        return <Review />;
+      default:
+        throw new Error("Unknown step");
+    }
+  }
 
   const currentValidationSchema = validationSchema[activeStep];
   const methods = useForm({
@@ -81,6 +108,18 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
+  function submitDisabled(): boolean {
+    if (activeStep === steps.length - 1) {
+      return (
+        !cardComplete.cardCvc ||
+        !cardComplete.cardExpiry ||
+        !cardComplete.cardNumber ||
+        !methods.formState.isValid
+      );
+    } else {
+      return !methods.formState.isValid;
+    }
+  }
   return (
     <FormProvider {...methods}>
       <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
@@ -121,7 +160,7 @@ export default function Checkout() {
                   )}
                   <LoadingButton
                     loading={loading}
-                    disabled={!methods.formState.isValid}
+                    disabled={submitDisabled()}
                     variant="contained"
                     type="submit"
                     sx={{ mt: 3, ml: 1 }}
