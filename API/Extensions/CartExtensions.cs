@@ -1,7 +1,6 @@
 using API.DTOs;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Extensions
 {
@@ -13,6 +12,8 @@ namespace API.Extensions
             {
                 Id = cart.Id,
                 BuyerId = cart.BuyerId,
+                PaymentIntentId = cart.PaymentIntentId,
+                ClientSecret = cart.ClientSecret,
                 Items = cart.Items.Select(item => new BasketItemDto
                 {
                     ProductId = item.ProductId,
