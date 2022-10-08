@@ -5,6 +5,11 @@ import Paper from "@mui/material/Paper";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import { StripeElementType } from "@stripe/stripe-js";
+import {
+  useStripe,
+  useElements,
+  CardNumberElement,
+} from "@stripe/react-stripe-js";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
@@ -17,7 +22,7 @@ import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchema } from "./checkoutValidation";
 import api from "../../app/api/agent";
-import { useAppDispatch } from "../../app/store/configureStore";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { clearCart } from "../cart/cartSlice";
 import { LoadingButton } from "@mui/lab";
 
@@ -28,6 +33,13 @@ export default function Checkout() {
   const [orderNumber, setOrderNumber] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const dispatch = useAppDispatch();
+  const [paymentMessage, setPaymentMessage] = React.useState<
+    string | undefined
+  >("");
+  const [paymentSucceeded, setPaymentSucceeded] = React.useState(false);
+  const { cart } = useAppSelector((state) => state.cart);
+  const stripe = useStripe();
+  const elements = useElements();
 
   const [cardState, setCardState] = React.useState<{
     elementError: { [key in StripeElementType]?: string };
@@ -82,23 +94,50 @@ export default function Checkout() {
     });
   }, [methods]);
 
-  const handleNext = async (data: FieldValues) => {
+  async function submitOrder(data: FieldValues) {
+    setLoading(true);
     const { nameOnCard, saveAddress, ...shippingAddress } = data;
-    if (activeStep === steps.length - 1) {
-      setLoading(true);
-      try {
+    if (!stripe || !elements) return;
+
+    try {
+      const cardElement = elements.getElement(CardNumberElement);
+      const paymentResult = await stripe.confirmCardPayment(
+        cart?.clientSecret!,
+        {
+          payment_method: {
+            card: cardElement!,
+            billing_details: {
+              name: nameOnCard,
+            },
+          },
+        }
+      );
+      if (paymentResult.paymentIntent?.status === "succeeded") {
         const orderNumber = await api.orders.create({
           saveAddress,
           shippingAddress,
         });
         setOrderNumber(orderNumber);
+        setPaymentSucceeded(true);
+        setPaymentMessage("Thank you we have receivd your payment.");
         setActiveStep(activeStep + 1);
         dispatch(clearCart());
         setLoading(false);
-      } catch (err) {
-        console.log(err);
+      } else {
+        setPaymentMessage(paymentResult.error?.message);
+        setPaymentSucceeded(false);
         setLoading(false);
+        setActiveStep(activeStep + 1);
       }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  }
+
+  const handleNext = async (data: FieldValues) => {
+    if (activeStep === steps.length - 1) {
+      await submitOrder(data);
     } else {
       setActiveStep(activeStep + 1);
     }
