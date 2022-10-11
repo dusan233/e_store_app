@@ -23,7 +23,7 @@ const ProductCard = ({ product }: Props) => {
   const dispatch = useAppDispatch();
 
   return (
-    <Card>
+    <Card variant="outlined">
       <CardHeader
         avatar={
           <Avatar sx={{ bgColor: "secondary.main" }}>

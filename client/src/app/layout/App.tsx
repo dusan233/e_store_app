@@ -12,20 +12,18 @@ import Catalog from "../../features/catalog/Catalog";
 import ProductDetails from "../../features/catalog/ProductDetails";
 import ContactPage from "../../features/contact/ContactPage";
 import HomePage from "../../features/home/HomePage";
-import Header from "./Header";
+import Header from "./Header/MiddleHeader";
 import "react-toastify/dist/ReactToastify.css";
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
 import CartPage from "../../features/cart/CartPage";
-import { getCookie } from "../util/util";
-import api from "../api/agent";
 import LoadingComponent from "./LoadingComponent";
-import CheckoutPage from "../../features/checkout/CheckoutPage";
 import { useAppDispatch } from "../store/configureStore";
-import { fetchCartAsync, setCart } from "../../features/cart/cartSlice";
+import { fetchCartAsync } from "../../features/cart/cartSlice";
 import Register from "../../features/account/Register";
 import Login from "../../features/account/Login";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
+import themeOptions from "./themeOptions";
 
 import Orders from "../../features/orders/Orders";
 import CheckoutWraper from "../../features/checkout/CheckoutWraper";
@@ -34,16 +32,7 @@ function App() {
   const dispatch = useAppDispatch();
   const [loading, seetLoading] = useState(true);
 
-  const [darkMode, setDarkMode] = useState(false);
-  const paletteType = darkMode ? "dark" : "light";
-  const theme = createTheme({
-    palette: {
-      mode: paletteType,
-      background: {
-        default: paletteType === "light" ? "#eaeaea" : "#121212",
-      },
-    },
-  });
+  const theme = createTheme(themeOptions);
 
   const initApp = useCallback(async () => {
     try {
@@ -58,17 +47,13 @@ function App() {
     initApp().then(() => seetLoading(false));
   }, [initApp]);
 
-  const handleThemeChange = () => {
-    setDarkMode(!darkMode);
-  };
-
   if (loading) return <LoadingComponent />;
 
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" />
       <CssBaseline />
-      <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
+      <Header />
       <Container>
         <Routes>
           <Route path="/" element={<HomePage />}></Route>

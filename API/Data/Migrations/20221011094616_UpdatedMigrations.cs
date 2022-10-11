@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Data.Migrations
 {
-    public partial class OrderEntityAdded : Migration
+    public partial class UpdatedMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,7 +56,9 @@ namespace API.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BuyerId = table.Column<string>(type: "TEXT", nullable: false)
+                    BuyerId = table.Column<string>(type: "TEXT", nullable: false),
+                    PaymentIntentId = table.Column<string>(type: "TEXT", nullable: false),
+                    ClientSecret = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,7 +82,8 @@ namespace API.Data.Migrations
                     OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Subtotal = table.Column<long>(type: "INTEGER", nullable: false),
                     DeliveryFee = table.Column<long>(type: "INTEGER", nullable: false),
-                    OrderStatus = table.Column<int>(type: "INTEGER", nullable: false)
+                    OrderStatus = table.Column<int>(type: "INTEGER", nullable: false),
+                    PaymentIntentId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,6 +101,7 @@ namespace API.Data.Migrations
                     Price = table.Column<long>(type: "INTEGER", nullable: false),
                     PictureUrl = table.Column<string>(type: "TEXT", nullable: false),
                     Type = table.Column<string>(type: "TEXT", nullable: false),
+                    Type2 = table.Column<string>(type: "TEXT", nullable: false),
                     Brand = table.Column<string>(type: "TEXT", nullable: false),
                     QuantityInStock = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -289,12 +293,12 @@ namespace API.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "ff85d40f-fb85-4310-97bb-73a42578fe88", "Member", "MEMBER" });
+                values: new object[] { 1, "5dc55a63-8a05-436d-a6b3-76a8ad28d7e7", "Member", "MEMBER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2, "d627ed10-e0ee-43d5-aa90-411a9be758aa", "Admin", "ADMIN" });
+                values: new object[] { 2, "bc5041db-c5b6-4e8c-80f2-a729d1d49043", "Admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

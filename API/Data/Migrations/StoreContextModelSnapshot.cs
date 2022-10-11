@@ -149,6 +149,10 @@ namespace API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Type2")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Products");
@@ -184,14 +188,14 @@ namespace API.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "578818de-7d59-4615-b075-7b27a5f32930",
+                            ConcurrencyStamp = "5dc55a63-8a05-436d-a6b3-76a8ad28d7e7",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "b42db194-965b-405d-9adb-b7a726c91fc4",
+                            ConcurrencyStamp = "bc5041db-c5b6-4e8c-80f2-a729d1d49043",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
