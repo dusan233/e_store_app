@@ -8,7 +8,7 @@ interface Props {
 
 const ProductList = ({ products }: Props) => {
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={1.5}>
       {products.map((product) => {
         return (
           <Grid item xs={4} key={product.id}>

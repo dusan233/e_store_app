@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Button,
   Card,
   CardActions,
@@ -9,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { ShoppingCart } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { Product } from "../../app/models/product";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
@@ -24,32 +26,26 @@ const ProductCard = ({ product }: Props) => {
 
   return (
     <Card variant="outlined">
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgColor: "secondary.main" }}>
-            {product.name.charAt(0).toUpperCase()}
-          </Avatar>
-        }
+      {/* <CardHeader
         title={product.name}
         titleTypographyProps={{
           sx: { fontWeight: "bold", color: "secondary.main" },
         }}
-      />
-      <CardMedia
-        sx={{
-          height: 140,
-          backgroundSize: "contain",
-          bgColor: "primary.light",
-        }}
-        image={product.pictureUrl}
-        title={product.name}
-      />
+      /> */}
+
       <CardContent>
-        <Typography gutterBottom color="secondary" variant="h5">
-          ${(product.price / 100).toFixed(2)}
+        <Link to={`/catalog/${product.id}`}>
+          <Box
+            sx={{ width: "100%", mb: 1 }}
+            component="img"
+            src={product.pictureUrl}
+          ></Box>
+        </Link>
+        <Typography gutterBottom variant="body1">
+          {product.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {product.brand} / {product.type}
+        <Typography gutterBottom color="secondary" variant="h6">
+          ${product.price.toFixed(2)}
         </Typography>
       </CardContent>
       <CardActions>
@@ -57,12 +53,12 @@ const ProductCard = ({ product }: Props) => {
           loading={status.includes("pendingAddItem" + product.id)}
           onClick={() => dispatch(addCartItemAsync({ productId: product.id }))}
           size="small"
+          variant="contained"
+          endIcon={<ShoppingCart />}
+          fullWidth
         >
-          Add to cart
+          Add
         </LoadingButton>
-        <Link to={`/catalog/${product.id}`}>
-          <Button size="small">View</Button>
-        </Link>
       </CardActions>
     </Card>
   );
