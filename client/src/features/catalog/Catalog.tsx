@@ -13,8 +13,6 @@ import {
   setProductParams,
 } from "./catalogSlice";
 import ProductList from "./ProductList";
-import ProductSearch from "./ProductSearch";
-
 const sortOptions = [
   { value: "name", label: "Alphabetical" },
   { value: "priceDesc", label: "Price - High to low" },
@@ -45,11 +43,8 @@ const Catalog = () => {
   if (status === "pending" || !metaData) return <LoadingComponent />;
 
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={1.5}>
       <Grid item xs={3}>
-        <Paper sx={{ mb: 2 }}>
-          <ProductSearch />
-        </Paper>
         <Paper sx={{ mb: 2, p: 2 }}>
           <RadioButtonGroup
             selectedValue={productParams.orderBy}

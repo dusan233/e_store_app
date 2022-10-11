@@ -29,11 +29,6 @@ namespace API.Controllers
                 _ => query.OrderBy(p => p.Name)
             };
 
-            if (!string.IsNullOrEmpty(productParams.SearchTerm))
-            {
-                query = query.Where(p => p.Name.ToLower().Contains(productParams.SearchTerm.Trim().ToLower()));
-            }
-
             var brandList = new List<string>();
             var typeList = new List<string>();
 
