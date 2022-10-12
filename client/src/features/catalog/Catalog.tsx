@@ -1,4 +1,4 @@
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import { useEffect } from "react";
 import AppPagination from "../../app/components/AppPagination";
 import CheckboxButtons from "../../app/components/CheckboxButtons";
@@ -46,6 +46,9 @@ const Catalog = () => {
     <Grid container spacing={1.5}>
       <Grid item xs={3}>
         <Paper sx={{ mb: 2, p: 2 }}>
+          <Typography gutterBottom variant="h5">
+            Sort:
+          </Typography>
           <RadioButtonGroup
             selectedValue={productParams.orderBy}
             options={sortOptions}
@@ -65,6 +68,9 @@ const Catalog = () => {
         </Paper>
 
         <Paper sx={{ mb: 2, p: 2 }}>
+          <Typography gutterBottom variant="h5">
+            Type:
+          </Typography>
           <CheckboxButtons
             items={types}
             checked={productParams.types}

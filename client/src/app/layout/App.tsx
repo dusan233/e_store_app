@@ -55,7 +55,7 @@ function App() {
       <ToastContainer position="bottom-right" />
       <CssBaseline />
       <Header />
-      <Container>
+      <Container sx={{ mb: 5 }}>
         <Routes>
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/catalog" element={<Catalog />}></Route>
