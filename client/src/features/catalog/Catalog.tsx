@@ -28,6 +28,7 @@ const Catalog = () => {
     filtersLoaded,
     brands,
     types,
+    types2,
     productParams,
     metaData,
   } = useAppSelector((state) => state.catalog);
@@ -58,6 +59,9 @@ const Catalog = () => {
           />
         </Paper>
         <Paper sx={{ mb: 2, p: 2 }}>
+          <Typography gutterBottom variant="h5">
+            Brands:
+          </Typography>
           <CheckboxButtons
             items={brands}
             checked={productParams.brands}
@@ -66,7 +70,18 @@ const Catalog = () => {
             }
           />
         </Paper>
-
+        <Paper sx={{ mb: 2, p: 2 }}>
+          <Typography gutterBottom variant="h5">
+            Console:
+          </Typography>
+          <CheckboxButtons
+            items={types2}
+            checked={productParams.types2}
+            onChange={(items: string[]) =>
+              dispatch(setProductParams({ types2: items }))
+            }
+          />
+        </Paper>
         <Paper sx={{ mb: 2, p: 2 }}>
           <Typography gutterBottom variant="h5">
             Type:

@@ -14,6 +14,7 @@ interface CatalogState {
   status: string;
   brands: string[];
   types: string[];
+  types2: string[];
   productParams: ProductParams;
   metaData: MetaData | null;
 }
@@ -30,6 +31,8 @@ function getAxiosParams(productParams: ProductParams) {
     params.append("brands", productParams.brands.toString());
   if (productParams.types.length > 0)
     params.append("types", productParams.types.toString());
+  if (productParams.types2.length > 0)
+    params.append("types2", productParams.types2.toString());
 
   return params;
 }
@@ -78,6 +81,7 @@ function initParams() {
     orderBy: "name",
     brands: [],
     types: [],
+    types2: [],
   };
 }
 
@@ -89,6 +93,7 @@ export const catalogSlice = createSlice({
     status: "idle",
     brands: [],
     types: [],
+    types2: [],
     productParams: initParams(),
     metaData: null,
   }),
@@ -145,6 +150,7 @@ export const catalogSlice = createSlice({
     builder.addCase(fetchFilters.fulfilled, (state, action) => {
       state.brands = action.payload.brands;
       state.types = action.payload.types;
+      state.types2 = action.payload.types2;
       state.status = "idle";
       state.filtersLoaded = true;
     });
