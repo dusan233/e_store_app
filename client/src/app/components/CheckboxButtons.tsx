@@ -1,9 +1,9 @@
 import { FormGroup, FormControlLabel, Checkbox } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   items: string[];
-  checked?: string[];
+  checked: string[];
   onChange: (items: string[]) => void;
 }
 
@@ -18,6 +18,10 @@ const CheckboxButtons = ({ items, checked, onChange }: Props) => {
     setCheckedItems(newChecked);
     onChange(newChecked);
   }
+
+  useEffect(() => {
+    setCheckedItems(checked);
+  }, [checked]);
 
   return (
     <FormGroup>

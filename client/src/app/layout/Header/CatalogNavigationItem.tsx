@@ -3,6 +3,8 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import { useState, MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { setProductParams } from "../../../features/catalog/catalogSlice";
+import { useAppDispatch } from "../../store/configureStore";
 
 interface Props {
   icon?: string;
@@ -18,6 +20,7 @@ interface Props {
 export default function BasicMenu({ icon, text, content }: Props) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const dispatch = useAppDispatch();
   const open = Boolean(anchorEl);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     if (!content) {
@@ -73,7 +76,17 @@ export default function BasicMenu({ icon, text, content }: Props) {
 
                   <MenuList>
                     {sec.links.map((link) => (
-                      <MenuItem>{link.name}</MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          const types = [link.linkTo.split(",")[0]];
+                          const types2 = [link.linkTo.split(",")[1]];
+                          dispatch(setProductParams({ types, types2 }));
+                          navigate("/catalog");
+                          handleClose();
+                        }}
+                      >
+                        {link.name}
+                      </MenuItem>
                     ))}
                   </MenuList>
                 </Box>
