@@ -27,6 +27,7 @@ import themeOptions from "./themeOptions";
 
 import Orders from "../../features/orders/Orders";
 import CheckoutWraper from "../../features/checkout/CheckoutWraper";
+import Footer from "./Footer";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -70,6 +71,7 @@ function App() {
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </Container>
+      <Footer />
     </ThemeProvider>
   );
 }
