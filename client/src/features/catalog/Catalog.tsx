@@ -72,7 +72,7 @@ const Catalog = () => {
         </Paper>
         <Paper sx={{ mb: 2, p: 2 }}>
           <Typography gutterBottom variant="h5">
-            Console:
+            Platform:
           </Typography>
           <CheckboxButtons
             items={types2}
