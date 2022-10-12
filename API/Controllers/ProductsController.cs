@@ -31,6 +31,7 @@ namespace API.Controllers
 
             var brandList = new List<string>();
             var typeList = new List<string>();
+            var typeList2 = new List<string>();
 
             if (!string.IsNullOrEmpty(productParams.Brands))
             {
@@ -42,8 +43,14 @@ namespace API.Controllers
                 typeList.AddRange(productParams.Types.ToLower().Split(",").ToList());
             }
 
+            if (!string.IsNullOrEmpty(productParams.Types2))
+            {
+                typeList2.AddRange(productParams.Types2.ToLower().Split(",").ToList());
+            }
+
             query = query.Where(p => brandList.Count == 0 || brandList.Contains(p.Brand.ToLower()));
             query = query.Where(p => typeList.Count == 0 || typeList.Contains(p.Type.ToLower()));
+            query = query.Where(p => typeList2.Count == 0 || typeList2.Contains(p.Type2.ToLower()));
 
             var products = await PagedList<Product>.ToPagedList(query, productParams.PageNumber, productParams.PageSize);
 

@@ -5,6 +5,7 @@ namespace API.RequestHelpers
         public string? OrderBy { get; set; }
 
         public string? Types { get; set; }
+        public string? Types2 { get; set; }
         public string? Brands { get; set; }
     }
 }
