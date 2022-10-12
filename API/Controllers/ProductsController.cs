@@ -68,11 +68,13 @@ namespace API.Controllers
         {
             var brands = await _context.Products.Select(p => p.Brand).Distinct().ToListAsync();
             var types = await _context.Products.Select(p => p.Type).Distinct().ToListAsync();
+            var types2 = await _context.Products.Select(p => p.Type2).Distinct().ToListAsync();
 
             return Ok(new
             {
                 brands,
-                types
+                types,
+                types2
             });
         }
 
