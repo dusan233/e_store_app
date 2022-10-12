@@ -73,9 +73,9 @@ namespace API.Controllers
         [HttpGet("filters")]
         public async Task<IActionResult> GetFilters()
         {
-            var brands = await _context.Products.Select(p => p.Brand).Distinct().ToListAsync();
-            var types = await _context.Products.Select(p => p.Type).Distinct().ToListAsync();
-            var types2 = await _context.Products.Select(p => p.Type2).Distinct().ToListAsync();
+            var brands = await _context.Products.Select(p => p.Brand).Distinct().Where(b => !string.IsNullOrEmpty(b)).ToListAsync();
+            var types = await _context.Products.Select(p => p.Type).Distinct().Where(b => !string.IsNullOrEmpty(b)).ToListAsync();
+            var types2 = await _context.Products.Select(p => p.Type2).Distinct().Where(b => !string.IsNullOrEmpty(b)).ToListAsync();
 
             return Ok(new
             {
