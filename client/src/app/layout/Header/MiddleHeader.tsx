@@ -10,7 +10,7 @@ import {
   Stack,
   Toolbar,
 } from "@mui/material";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/configureStore";
 import SignedInMenu from "../SignedInMenu";
 import logoImage from "../../images/logo.png";
@@ -26,6 +26,7 @@ const rightLinks = [
 const MiddleHeader = () => {
   const { cart } = useAppSelector((state) => state.cart);
   const { user } = useAppSelector((state) => state.account);
+  const navigate = useNavigate();
   const itemCount = cart?.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -48,7 +49,13 @@ const MiddleHeader = () => {
 
           <Box display="flex" alignItems="center">
             <Stack direction="row" marginRight={3} spacing={0.1}>
-              <IconButton size="large" sx={{ color: "inherit" }}>
+              <IconButton
+                onClick={() => {
+                  user ? navigate("/cart") : navigate("/login");
+                }}
+                size="large"
+                sx={{ color: "inherit" }}
+              >
                 <Badge badgeContent={itemCount} color="secondary">
                   <ShoppingCart />
                 </Badge>

@@ -47,6 +47,7 @@ axios.interceptors.response.use(
         toast.error(data.title);
         break;
       case 401:
+        history.push("/login");
         toast.error(data.title);
         break;
       case 500:
