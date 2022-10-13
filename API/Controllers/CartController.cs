@@ -2,6 +2,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ namespace API.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpGet(Name = "GetCart")]
         public async Task<ActionResult<CartDto>> GetCart()
         {
@@ -25,7 +27,7 @@ namespace API.Controllers
 
             return cart.MapCartToDto();
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<CartDto>> AddItemToCart(int productId, int quantity)
         {
@@ -44,7 +46,7 @@ namespace API.Controllers
 
         }
 
-
+        [Authorize]
         [HttpDelete]
         public async Task<ActionResult> RemoveCartItem(int productId, int quantity)
         {
