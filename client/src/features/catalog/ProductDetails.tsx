@@ -1,15 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import {
-  Divider,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingComponent from "../../app/layout/LoadingComponent";
@@ -33,12 +23,6 @@ const ProductDetails = () => {
     if (item) setQuantity(item.quantity);
     if (!product) dispatch(fetchProductAsync(parseInt(id!)));
   }, [id, item, dispatch, product]);
-
-  function handleInputChange(event: any) {
-    if (event.target.value >= 0) {
-      setQuantity(parseInt(event.target.value));
-    }
-  }
 
   function handleUpdateCart() {
     if (!item || quantity > item.quantity) {
@@ -74,64 +58,63 @@ const ProductDetails = () => {
         />
       </Grid>
       <Grid item xs={7}>
-        <Typography variant="h3">{product.name}</Typography>
+        <Typography variant="h4">{product.name}</Typography>
         <Divider sx={{ mb: 2 }} />
         <Typography color="secondary" variant="h4">
           ${(product.price / 100).toFixed(2)}
         </Typography>
-        <TableContainer>
-          <Table>
-            <TableBody>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>{product.name}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Description</TableCell>
-                <TableCell>{product.description}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Type</TableCell>
-                <TableCell>{product.type}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Brand</TableCell>
-                <TableCell>{product.brand}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Quantity</TableCell>
-                <TableCell>{product.quantityInStock}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <TextField
-              variant="outlined"
-              type="number"
-              label="Quantity in Cart"
-              value={quantity}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <LoadingButton
-              disabled={
-                item?.quantity === quantity || (!item && quantity === 0)
-              }
-              loading={status.includes("pending")}
-              onClick={handleUpdateCart}
-              sx={{ height: "55px" }}
-              color="primary"
-              size="large"
-              variant="contained"
-              fullWidth
+        <Box mt={4}>
+          <Typography variant="subtitle1" gutterBottom>
+            <Box
+              component="span"
+              sx={{ color: "primary.dark", fontWeight: "bold" }}
             >
-              {item ? "Update Quantity" : "Add to cart"}
-            </LoadingButton>
-          </Grid>
-        </Grid>
+              Description:
+            </Box>{" "}
+            {product.description}
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            <Box
+              component="span"
+              sx={{ color: "primary.dark", fontWeight: "bold" }}
+            >
+              Type:
+            </Box>{" "}
+            {product.type}
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            <Box
+              component="span"
+              sx={{ color: "primary.dark", fontWeight: "bold" }}
+            >
+              Platform:
+            </Box>{" "}
+            {product.type2}
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            <Box
+              component="span"
+              sx={{ color: "primary.dark", fontWeight: "bold" }}
+            >
+              Brand:
+            </Box>{" "}
+            {product.brand || "/"}
+          </Typography>
+        </Box>
+
+        <Box mt={5}>
+          <LoadingButton
+            disabled={item?.quantity === quantity || (!item && quantity === 0)}
+            loading={status.includes("pending")}
+            onClick={handleUpdateCart}
+            color="primary"
+            size="large"
+            variant="contained"
+            fullWidth
+          >
+            Add to cart
+          </LoadingButton>
+        </Box>
       </Grid>
     </Grid>
   );
