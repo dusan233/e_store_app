@@ -15,12 +15,10 @@ const ProductDetails = () => {
     productSelectors.selectById(state, id!)
   );
   const { status: productStatus } = useAppSelector((state) => state.catalog);
-  const [quantity, setQuantity] = useState(0);
 
   const item = cart?.items.find((item) => item.productId === product?.id);
 
   useEffect(() => {
-    if (item) setQuantity(item.quantity);
     if (!product) dispatch(fetchProductAsync(parseInt(id!)));
   }, [id, item, dispatch, product]);
 
