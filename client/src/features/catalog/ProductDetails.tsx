@@ -25,7 +25,7 @@ const ProductDetails = () => {
   function handleUpdateCart() {
     dispatch(
       addCartItemAsync({
-        productId: item?.productId!,
+        productId: product?.id!,
       })
     );
   }
