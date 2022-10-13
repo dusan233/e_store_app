@@ -60,7 +60,7 @@ const MiddleHeader = () => {
             ) : (
               <Stack direction="row" spacing={1.5}>
                 {rightLinks.map(({ title, path }) => (
-                  <NavigationLink>{title}</NavigationLink>
+                  <NavigationLink key={title}>{title}</NavigationLink>
                 ))}
               </Stack>
             )}

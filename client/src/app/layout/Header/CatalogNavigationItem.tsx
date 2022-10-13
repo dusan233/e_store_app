@@ -64,8 +64,8 @@ export default function BasicMenu({ icon, text, content }: Props) {
         >
           <Box sx={{ px: 2, py: 1 }}>
             <Stack direction="row" spacing={3.5}>
-              {content?.map((sec) => (
-                <Box>
+              {content?.map((sec, i) => (
+                <Box key={i}>
                   <Box>
                     <img src={sec.img} />
                   </Box>
@@ -75,8 +75,9 @@ export default function BasicMenu({ icon, text, content }: Props) {
                   </Typography>
 
                   <MenuList>
-                    {sec.links.map((link) => (
+                    {sec.links.map((link, index) => (
                       <MenuItem
+                        key={index}
                         onClick={() => {
                           const types = [link.linkTo.split(",")[0]];
                           const types2 = [link.linkTo.split(",")[1]];
