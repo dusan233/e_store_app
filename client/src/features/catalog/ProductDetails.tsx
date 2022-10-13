@@ -25,23 +25,11 @@ const ProductDetails = () => {
   }, [id, item, dispatch, product]);
 
   function handleUpdateCart() {
-    if (!item || quantity > item.quantity) {
-      const updateQuantity = item ? quantity - item.quantity : quantity;
-      dispatch(
-        addCartItemAsync({
-          productId: item?.productId!,
-          quantity: updateQuantity,
-        })
-      );
-    } else {
-      const updatedQuantity = item.quantity - quantity;
-      dispatch(
-        removeCartItemAsync({
-          productId: item?.productId!,
-          quantity: updatedQuantity,
-        })
-      );
-    }
+    dispatch(
+      addCartItemAsync({
+        productId: item?.productId!,
+      })
+    );
   }
 
   if (productStatus === "pendingFetchProduct") return <LoadingComponent />;
@@ -104,7 +92,7 @@ const ProductDetails = () => {
 
         <Box mt={5}>
           <LoadingButton
-            disabled={item?.quantity === quantity || (!item && quantity === 0)}
+            disabled={status.includes("pending")}
             loading={status.includes("pending")}
             onClick={handleUpdateCart}
             color="primary"
