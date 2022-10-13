@@ -50,11 +50,6 @@ const MiddleHeader = () => {
             <Stack direction="row" marginRight={3} spacing={0.1}>
               <IconButton size="large" sx={{ color: "inherit" }}>
                 <Badge badgeContent={itemCount} color="secondary">
-                  <Favorite />
-                </Badge>
-              </IconButton>
-              <IconButton size="large" sx={{ color: "inherit" }}>
-                <Badge badgeContent={itemCount} color="secondary">
                   <ShoppingCart />
                 </Badge>
               </IconButton>
