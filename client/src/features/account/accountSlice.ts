@@ -35,6 +35,7 @@ export const fetchCurrentUser = createAsyncThunk<User>(
   async (_, thunkAPI) => {
     thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem("user")!)));
     try {
+      console.log("acc");
       const userDto = await api.account.currentUser();
       const { cart, ...user } = userDto;
       if (cart) thunkAPI.dispatch(setCart(cart));

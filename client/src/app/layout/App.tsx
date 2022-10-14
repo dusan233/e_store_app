@@ -28,6 +28,7 @@ import themeOptions from "./themeOptions";
 import Orders from "../../features/orders/Orders";
 import CheckoutWraper from "../../features/checkout/CheckoutWraper";
 import Footer from "./Footer";
+import api from "../api/agent";
 
 function App() {
   const dispatch = useAppDispatch();

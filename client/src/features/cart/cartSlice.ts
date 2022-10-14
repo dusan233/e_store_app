@@ -35,19 +35,15 @@ export const removeCartItemAsync = createAsyncThunk<
   }
 });
 
-export const fetchCartAsync = createAsyncThunk(
+export const fetchCartAsync = createAsyncThunk<Cart>(
   "cart/fetchCartAsync",
   async (_, thunkAPI) => {
     try {
+      console.log("cartinjo");
       return await api.cart.get();
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
     }
-  },
-  {
-    condition: () => {
-      if (!getCookie("buyerId")) return false;
-    },
   }
 );
 
