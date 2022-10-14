@@ -28,10 +28,10 @@ const CartPage = () => {
           <TableHead>
             <TableRow>
               <TableCell>Product</TableCell>
-              <TableCell align="right">Price</TableCell>
+              <TableCell align="center">Price</TableCell>
               <TableCell align="center">Quantity</TableCell>
-              <TableCell align="right">Subtotal</TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="center">Subtotal</TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -40,7 +40,7 @@ const CartPage = () => {
                 key={item.productId}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell component="th" scope="row" align="center">
                   <Box display="flex" alignItems="center">
                     <img
                       src={item.pictureUrl}
@@ -50,10 +50,10 @@ const CartPage = () => {
                     <span>{item.name}</span>
                   </Box>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   ${(item.price / 100).toFixed(2)}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <LoadingButton
                     loading={
                       status === "pendingRemoveItem" + item.productId + "remove"
@@ -83,10 +83,10 @@ const CartPage = () => {
                   </LoadingButton>
                 </TableCell>
 
-                <TableCell align="right">
+                <TableCell align="center">
                   ${(item.price * item.quantity).toFixed(2)}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <LoadingButton
                     loading={
                       status === "pendingRemoveItem" + item.productId + "delete"
