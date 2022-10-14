@@ -66,15 +66,15 @@ namespace API.Controllers
         private Cart CreateCart()
         {
             var buyerId = User.Identity?.Name;
-            if (string.IsNullOrEmpty(buyerId))
-            {
-                buyerId = Guid.NewGuid().ToString();
-                var cookieOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(30) };
-                Response.Cookies.Append("buyerId", buyerId, cookieOptions);
-            };
+            // if (string.IsNullOrEmpty(buyerId))
+            // {
+            //     buyerId = Guid.NewGuid().ToString();
+            //     var cookieOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(30) };
+            //     Response.Cookies.Append("buyerId", buyerId, cookieOptions);
+            // };
 
 
-            var cart = new Cart { BuyerId = buyerId };
+            var cart = new Cart { BuyerId = buyerId! };
             _context.Cart.Add(cart);
 
             return cart;
@@ -84,20 +84,20 @@ namespace API.Controllers
 
         private string GetBuyerId()
         {
-            return User.Identity?.Name ?? Request.Cookies["buyerId"];
+            return User.Identity?.Name;
         }
         private async Task<Cart?> GetUserCart(string buyerId)
         {
             if (string.IsNullOrEmpty(buyerId))
             {
-                Response.Cookies.Delete("buyerId");
+                // Response.Cookies.Delete("buyerId");
                 return null;
             }
 
             return await _context.Cart
                 .Include(i => i.Items)
                 .ThenInclude(p => p.Product)
-                .FirstOrDefaultAsync(x => x.BuyerId == Request.Cookies["buyerId"]);
+                .FirstOrDefaultAsync(x => x.BuyerId == buyerId);
         }
     }
 }
