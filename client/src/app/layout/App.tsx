@@ -18,7 +18,7 @@ import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
 import CartPage from "../../features/cart/CartPage";
 import LoadingComponent from "./LoadingComponent";
-import { useAppDispatch } from "../store/configureStore";
+import { useAppDispatch, useAppSelector } from "../store/configureStore";
 import { fetchCartAsync } from "../../features/cart/cartSlice";
 import Register from "../../features/account/Register";
 import Login from "../../features/account/Login";
@@ -33,17 +33,23 @@ import api from "../api/agent";
 function App() {
   const dispatch = useAppDispatch();
   const [loading, seetLoading] = useState(true);
+  const { user } = useAppSelector((state) => state.account);
 
   const theme = createTheme(themeOptions);
 
   const initApp = useCallback(async () => {
     try {
       await dispatch(fetchCurrentUser());
-      await dispatch(fetchCartAsync());
     } catch (err) {
       console.log(err);
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchCartAsync());
+    }
+  }, [user]);
 
   useEffect(() => {
     initApp().then(() => seetLoading(false));
