@@ -1,4 +1,11 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  CircularProgress,
+  Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { useEffect } from "react";
 import AppPagination from "../../app/components/AppPagination";
 import CheckboxButtons from "../../app/components/CheckboxButtons";
@@ -44,70 +51,85 @@ const Catalog = () => {
   if (status === "pending" || !metaData) return <LoadingComponent />;
 
   return (
-    <Grid container spacing={1.5}>
-      <Grid item xs={3}>
-        <Paper sx={{ mb: 2, p: 2 }}>
-          <Typography gutterBottom variant="h5">
-            Sort:
-          </Typography>
-          <RadioButtonGroup
-            selectedValue={productParams.orderBy}
-            options={sortOptions}
-            onChange={(e) =>
-              dispatch(setProductParams({ orderBy: e.target.value }))
+    <>
+      {status.includes("pending") && (
+        <Backdrop open={true} sx={{ zIndex: 1000 }}>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100vh"
+          >
+            <CircularProgress size={50} color="info" />
+          </Box>
+        </Backdrop>
+      )}
+
+      <Grid container spacing={1.5}>
+        <Grid item xs={3}>
+          <Paper sx={{ mb: 2, p: 2 }}>
+            <Typography gutterBottom variant="h5">
+              Sort:
+            </Typography>
+            <RadioButtonGroup
+              selectedValue={productParams.orderBy}
+              options={sortOptions}
+              onChange={(e) =>
+                dispatch(setProductParams({ orderBy: e.target.value }))
+              }
+            />
+          </Paper>
+          <Paper sx={{ mb: 2, p: 2 }}>
+            <Typography gutterBottom variant="h5">
+              Brands:
+            </Typography>
+            <CheckboxButtons
+              items={brands}
+              checked={productParams.brands}
+              onChange={(items: string[]) =>
+                dispatch(setProductParams({ brands: items }))
+              }
+            />
+          </Paper>
+          <Paper sx={{ mb: 2, p: 2 }}>
+            <Typography gutterBottom variant="h5">
+              Platform:
+            </Typography>
+            <CheckboxButtons
+              items={types2}
+              checked={productParams.types2}
+              onChange={(items: string[]) =>
+                dispatch(setProductParams({ types2: items }))
+              }
+            />
+          </Paper>
+          <Paper sx={{ mb: 2, p: 2 }}>
+            <Typography gutterBottom variant="h5">
+              Type:
+            </Typography>
+            <CheckboxButtons
+              items={types}
+              checked={productParams.types}
+              onChange={(items: string[]) =>
+                dispatch(setProductParams({ types: items }))
+              }
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={9}>
+          <ProductList products={products} />
+        </Grid>
+        <Grid item xs={3} />
+        <Grid item xs={9}>
+          <AppPagination
+            metaData={metaData}
+            onPageChange={(page: number) =>
+              dispatch(setPageNumber({ pageNumber: page }))
             }
           />
-        </Paper>
-        <Paper sx={{ mb: 2, p: 2 }}>
-          <Typography gutterBottom variant="h5">
-            Brands:
-          </Typography>
-          <CheckboxButtons
-            items={brands}
-            checked={productParams.brands}
-            onChange={(items: string[]) =>
-              dispatch(setProductParams({ brands: items }))
-            }
-          />
-        </Paper>
-        <Paper sx={{ mb: 2, p: 2 }}>
-          <Typography gutterBottom variant="h5">
-            Platform:
-          </Typography>
-          <CheckboxButtons
-            items={types2}
-            checked={productParams.types2}
-            onChange={(items: string[]) =>
-              dispatch(setProductParams({ types2: items }))
-            }
-          />
-        </Paper>
-        <Paper sx={{ mb: 2, p: 2 }}>
-          <Typography gutterBottom variant="h5">
-            Type:
-          </Typography>
-          <CheckboxButtons
-            items={types}
-            checked={productParams.types}
-            onChange={(items: string[]) =>
-              dispatch(setProductParams({ types: items }))
-            }
-          />
-        </Paper>
+        </Grid>
       </Grid>
-      <Grid item xs={9}>
-        <ProductList products={products} />
-      </Grid>
-      <Grid item xs={3} />
-      <Grid item xs={9}>
-        <AppPagination
-          metaData={metaData}
-          onPageChange={(page: number) =>
-            dispatch(setPageNumber({ pageNumber: page }))
-          }
-        />
-      </Grid>
-    </Grid>
+    </>
   );
 };
 

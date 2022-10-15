@@ -9,6 +9,7 @@ import { Paper } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
+import { toast } from "react-toastify";
 import api from "../../app/api/agent";
 
 export default function Register() {
@@ -55,7 +56,10 @@ export default function Register() {
       <Box
         component="form"
         onSubmit={handleSubmit((data) =>
-          api.account.register(data).catch((error) => handleApiErrors(error))
+          api.account
+            .register(data)
+            .then(() => toast.success("You registered successfully"))
+            .catch((error) => handleApiErrors(error))
         )}
         noValidate
         sx={{ mt: 1 }}
