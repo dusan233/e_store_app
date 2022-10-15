@@ -68,6 +68,7 @@ export default function Register() {
           {...register("username", { required: "Username is required" })}
           error={!!errors.username}
           helperText={"username is required"}
+          variant="standard"
         />
         <TextField
           margin="normal"
@@ -77,6 +78,7 @@ export default function Register() {
           {...register("email", { required: "Email is required" })}
           error={!!errors.email}
           helperText={"Email is required"}
+          variant="standard"
         />
         <TextField
           margin="normal"
@@ -86,6 +88,7 @@ export default function Register() {
           {...register("password", { required: "Password is required" })}
           error={!!errors.password}
           helperText={"Password is required"}
+          variant="standard"
         />
 
         <LoadingButton

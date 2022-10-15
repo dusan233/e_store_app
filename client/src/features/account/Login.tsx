@@ -64,6 +64,7 @@ export default function Login() {
           {...register("username", { required: "Username is required" })}
           error={!!errors.username}
           helperText={errors.username && (errors.username.message as string)}
+          variant="standard"
         />
         <TextField
           margin="normal"
@@ -73,6 +74,7 @@ export default function Login() {
           {...register("password", { required: "Password is required" })}
           error={!!errors.password}
           helperText={errors.password && (errors.password.message as string)}
+          variant="standard"
         />
 
         <LoadingButton
