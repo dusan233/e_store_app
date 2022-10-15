@@ -3,6 +3,7 @@ import {
   CssBaseline,
   createTheme,
   ThemeProvider,
+  Box,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -61,24 +62,32 @@ function App() {
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" />
       <CssBaseline />
-      <Header />
-      <Container sx={{ my: 8 }}>
-        <Routes>
-          <Route path="/" element={<HomePage />}></Route>
-          <Route path="/catalog" element={<Catalog />}></Route>
-          <Route path="/catalog/:id" element={<ProductDetails />}></Route>
-          <Route path="/about" element={<AboutPage />}></Route>
-          <Route path="/contact" element={<ContactPage />}></Route>
-          <Route path="/server-error" element={<ServerError />}></Route>
-          <Route path="/cart" element={<CartPage />}></Route>
-          <Route path="/orders" element={<Orders />}></Route>
-          <Route path="/checkout" element={<CheckoutWraper />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/register" element={<Register />}></Route>
-          <Route path="*" element={<NotFound />}></Route>
-        </Routes>
-      </Container>
-      <Footer />
+      <Box
+        display="flex"
+        sx={{
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        <Header />
+        <Container sx={{ my: 8, flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<HomePage />}></Route>
+            <Route path="/catalog" element={<Catalog />}></Route>
+            <Route path="/catalog/:id" element={<ProductDetails />}></Route>
+            <Route path="/about" element={<AboutPage />}></Route>
+            <Route path="/contact" element={<ContactPage />}></Route>
+            <Route path="/server-error" element={<ServerError />}></Route>
+            <Route path="/cart" element={<CartPage />}></Route>
+            <Route path="/orders" element={<Orders />}></Route>
+            <Route path="/checkout" element={<CheckoutWraper />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/register" element={<Register />}></Route>
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
+        </Container>
+        <Footer />
+      </Box>
     </ThemeProvider>
   );
 }
