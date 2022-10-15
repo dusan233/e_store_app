@@ -67,7 +67,7 @@ export default function Register() {
           label="Username"
           {...register("username", { required: "Username is required" })}
           error={!!errors.username}
-          helperText={"username is required"}
+          helperText={errors.username && (errors.username.message as string)}
           variant="standard"
         />
         <TextField
@@ -77,7 +77,7 @@ export default function Register() {
           label="Email"
           {...register("email", { required: "Email is required" })}
           error={!!errors.email}
-          helperText={"Email is required"}
+          helperText={errors.email && (errors.email.message as string)}
           variant="standard"
         />
         <TextField
@@ -87,7 +87,7 @@ export default function Register() {
           type="password"
           {...register("password", { required: "Password is required" })}
           error={!!errors.password}
-          helperText={"Password is required"}
+          helperText={errors.password && (errors.password.message as string)}
           variant="standard"
         />
 
