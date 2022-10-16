@@ -38,7 +38,7 @@ const ProductDetails = () => {
     <Grid container spacing={6}>
       <Grid item xs={5}>
         <img
-          src={product.pictureUrl}
+          src={product.poster || product.pictureUrl}
           alt={product.name}
           style={{ width: "100%" }}
         />

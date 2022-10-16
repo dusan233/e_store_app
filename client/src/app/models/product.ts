@@ -4,6 +4,7 @@ export interface Product {
   description: string;
   price: number;
   pictureUrl: string;
+  poster: string;
   type: string;
   type2: string;
   brand: string;

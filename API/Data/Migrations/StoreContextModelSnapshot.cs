@@ -139,6 +139,10 @@ namespace API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Poster")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<long>("Price")
                         .HasColumnType("INTEGER");
 
@@ -188,14 +192,14 @@ namespace API.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "5dc55a63-8a05-436d-a6b3-76a8ad28d7e7",
+                            ConcurrencyStamp = "ccd485b3-78a5-4c13-b947-6e87b66fd685",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "bc5041db-c5b6-4e8c-80f2-a729d1d49043",
+                            ConcurrencyStamp = "d216da19-95d4-413e-a3e0-b497ef7071cb",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
