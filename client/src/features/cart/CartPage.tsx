@@ -2,6 +2,7 @@ import { Add, Delete, Remove } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -13,7 +14,9 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
+import { currencyFormat } from "../../app/util/util";
 import { addCartItemAsync, removeCartItemAsync } from "./cartSlice";
+import CartSummery from "./CartSummery";
 
 const CartPage = () => {
   const { cart, status } = useAppSelector((state) => state.cart);
@@ -84,7 +87,7 @@ const CartPage = () => {
                 </TableCell>
 
                 <TableCell align="center">
-                  ${(item.price * item.quantity).toFixed(2)}
+                  {currencyFormat(item.price * item.quantity)}
                 </TableCell>
                 <TableCell align="center">
                   <LoadingButton
@@ -110,7 +113,12 @@ const CartPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Link to="/checkout">Checkout</Link>
+      <CartSummery />
+      <Link to="/checkout" style={{ textDecoration: "none" }}>
+        <Button color="primary" variant="contained">
+          Checkout
+        </Button>
+      </Link>
     </>
   );
 };
