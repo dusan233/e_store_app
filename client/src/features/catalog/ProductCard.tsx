@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { Product } from "../../app/models/product";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { addCartItemAsync } from "../cart/cartSlice";
+import { currencyFormat } from "../../app/util/util";
 
 interface Props {
   product: Product;
@@ -45,7 +46,7 @@ const ProductCard = ({ product }: Props) => {
           {product.name}
         </Typography>
         <Typography gutterBottom color="secondary" variant="h6">
-          ${product.price.toFixed(2)}
+          {currencyFormat(product.price)}
         </Typography>
       </CardContent>
       <CardActions>
