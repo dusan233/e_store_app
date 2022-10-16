@@ -30,6 +30,7 @@ import Orders from "../../features/orders/Orders";
 import CheckoutWraper from "../../features/checkout/CheckoutWraper";
 import Footer from "./Footer";
 import api from "../api/agent";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -81,9 +82,30 @@ function App() {
             <Route path="/about" element={<AboutPage />}></Route>
             <Route path="/contact" element={<ContactPage />}></Route>
             <Route path="/server-error" element={<ServerError />}></Route>
-            <Route path="/cart" element={<CartPage />}></Route>
-            <Route path="/orders" element={<Orders />}></Route>
-            <Route path="/checkout" element={<CheckoutWraper />}></Route>
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute user={user}>
+                  <CartPage />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/orders"
+              element={
+                <ProtectedRoute user={user}>
+                  <Orders />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute user={user}>
+                  <CheckoutWraper />
+                </ProtectedRoute>
+              }
+            ></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="*" element={<NotFound />}></Route>

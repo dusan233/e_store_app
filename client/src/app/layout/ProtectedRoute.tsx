@@ -1,13 +1,17 @@
-import {} from "react-router-dom";
-import { Route, RouteProps } from "react-router-dom";
-import { useAppSelector } from "../store/configureStore";
+import { Navigate } from "react-router-dom";
+import { User } from "../models/user";
 
-interface Props extends RouteProps {
-  component: any;
+interface Props {
+  user: User | null;
+  children: any;
 }
-const ProtectedRoute = ({ component: Component, ...ress }: Props) => {
-  let { user } = useAppSelector((state) => state.account);
-  return <div>ds</div>;
+
+const ProtectedRoute = ({ user, children }: Props) => {
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 };
 
 export default ProtectedRoute;
