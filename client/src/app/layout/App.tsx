@@ -6,7 +6,7 @@ import {
   Box,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AboutPage from "../../features/about/AboutPage";
 import Catalog from "../../features/catalog/Catalog";
@@ -72,7 +72,10 @@ function App() {
         <Header />
         <Container sx={{ my: 8, flex: 1 }}>
           <Routes>
-            <Route path="/" element={<HomePage />}></Route>
+            <Route
+              path="/"
+              element={<Navigate to="/catalog" replace />}
+            ></Route>
             <Route path="/catalog" element={<Catalog />}></Route>
             <Route path="/catalog/:id" element={<ProductDetails />}></Route>
             <Route path="/about" element={<AboutPage />}></Route>
