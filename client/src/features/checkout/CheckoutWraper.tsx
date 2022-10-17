@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import api from "../../app/api/agent";
 import { useAppDispatch } from "../../app/store/configureStore";
 import { setCart } from "../cart/cartSlice";
@@ -37,6 +37,3 @@ const CheckoutWraper = () => {
 };
 
 export default CheckoutWraper;
-function useState(arg0: boolean): [any, any] {
-  throw new Error("Function not implemented.");
-}

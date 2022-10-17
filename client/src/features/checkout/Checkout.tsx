@@ -67,14 +67,14 @@ export default function Checkout() {
       case 0:
         return <AddressForm />;
       case 1:
+        return <Review />;
+      case 2:
         return (
           <PaymentForm
             cardState={cardState}
             onCardInputChange={onCardInputChange}
           />
         );
-      case 2:
-        return <Review />;
       default:
         throw new Error("Unknown step");
     }
