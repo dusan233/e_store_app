@@ -18,7 +18,11 @@ const CheckoutWraper = () => {
   useEffect(() => {
     api.payments
       .createPaymentIntent()
-      .then((cart) => setCart(cart))
+      .then((cart) => {
+        console.log(cart);
+
+        setCart(cart);
+      })
       .catch((err) => {
         console.log(err);
       })

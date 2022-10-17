@@ -16,11 +16,13 @@ namespace API.Controllers
         private readonly PaymentService _paymentService;
         private readonly StoreContext _context;
         private readonly IConfiguration _config;
+        // private readonly ILogger _logger;
         public PaymentsController(PaymentService paymentService, IConfiguration config, StoreContext context)
         {
             _paymentService = paymentService;
             _context = context;
             _config = config;
+            // _logger = logger;
         }
 
         [Authorize]
@@ -35,9 +37,13 @@ namespace API.Controllers
 
             if (intent == null) return BadRequest(new ProblemDetails { Title = "Problem creating payment" });
 
-            cart.PaymentIntentId = cart.PaymentIntentId ?? intent.Id;
-            cart.ClientSecret = cart.ClientSecret ?? intent.ClientSecret;
+
+
+
+            cart.PaymentIntentId = string.IsNullOrEmpty(cart.PaymentIntentId) ? intent.Id : cart.PaymentIntentId;
+            cart.ClientSecret = string.IsNullOrEmpty(cart.ClientSecret) ? intent.ClientSecret : cart.ClientSecret;
             _context.Update(cart);
+
 
             var result = await _context.SaveChangesAsync() > 0;
 
