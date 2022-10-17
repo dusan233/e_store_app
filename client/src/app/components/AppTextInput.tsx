@@ -12,7 +12,7 @@ const AppTextInput = (props: Props) => {
       {...props}
       {...field}
       fullWidth
-      variant="outlined"
+      variant="standard"
       error={!!fieldState.error}
       helperText={fieldState.error?.message}
     />

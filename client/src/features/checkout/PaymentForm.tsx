@@ -44,7 +44,7 @@ export default function PaymentForm({ cardState, onCardInputChange }: Props) {
             label="Card number"
             fullWidth
             autoComplete="cc-number"
-            variant="outlined"
+            variant="standard"
             InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
@@ -63,7 +63,7 @@ export default function PaymentForm({ cardState, onCardInputChange }: Props) {
             error={!!cardState.elementError.cardExpiry}
             fullWidth
             autoComplete="cc-exp"
-            variant="outlined"
+            variant="standard"
             InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
@@ -82,7 +82,7 @@ export default function PaymentForm({ cardState, onCardInputChange }: Props) {
             error={!!cardState.elementError.cardCvc}
             fullWidth
             autoComplete="cc-csc"
-            variant="outlined"
+            variant="standard"
             InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,

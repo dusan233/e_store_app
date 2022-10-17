@@ -26,7 +26,7 @@ import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { clearCart } from "../cart/cartSlice";
 import { LoadingButton } from "@mui/lab";
 
-const steps = ["Shipping address", "Payment details", "Review your order"];
+const steps = ["Shipping address", "Review your order", "Payment details"];
 
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
