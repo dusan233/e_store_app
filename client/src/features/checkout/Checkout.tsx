@@ -101,6 +101,7 @@ export default function Checkout() {
 
     try {
       const cardElement = elements.getElement(CardNumberElement);
+      console.log(cart?.clientSecret);
       const paymentResult = await stripe.confirmCardPayment(
         cart?.clientSecret!,
         {
